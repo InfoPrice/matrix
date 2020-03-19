@@ -1,27 +1,27 @@
+ 
 {
-  "family": "ECS_SERVICE",
+  "family": "FAMILY_NAME",
   "containerDefinitions": [
     {
+      "name": "CONTAINER_NAME",
+      "image": "199886244715.dkr.ecr.us-east-1.amazonaws.com/ECR_NAME:IMAGE_VERSION",
+      "essential": CONTAINER_ESSENTIAL,
       "memory": MEMORY,
+      "cpu": CPU_LIMITS,
+      "portMappings": [
+        {
+          "containerPort": CONTAINER_PORT,
+          "hostPort": HOST_PORT
+        }
+      ],
       "environment": [
           {
               "name": "ENVIRONMENT",
-              "value": "VALUE"
+              "value": "ENV_VALUE"
           },
           {
             "name": "JAVA_XMX",
             "value": "SET_JAVA_XMX"
-          }
-      ],
-      "name": "ECS_SERVICE",
-      "mountPoints": [],
-      "image": "199886244715.dkr.ecr.us-east-1.amazonaws.com/ECR_NAME:IMAGE_VERSION",
-      "cpu": CPU_LIMITS,
-      "portMappings": [
-          {
-              "protocol": "tcp",
-              "containerPort": CONTAINER_PORT,
-              "hostPort": HOST_PORT
           }
       ],
       "logConfiguration": {
@@ -29,9 +29,7 @@
           "options": {
               "tag": "CONTAINER_NAME"
           }
-      },
-      "essential": true,
-      "volumesFrom": []
+      }
     }
   ]
 }
