@@ -1,37 +1,37 @@
 {
-    "family": "prd-matrix",
-    "containerDefinitions": [
-      {
-        "memory": MEMORY,
-        "environment": [
-            {
-                "name": "ENVIRONMENT",
-                "value": "VALUE"
-            },
-            {
-              "name": "JAVA_XMX",
-              "value": "SET_JAVA_XMX"
-            }
-        ],
-        "name": "prd-matrix",
-        "mountPoints": [],
-        "image": "199886244715.dkr.ecr.us-east-1.amazonaws.com/matrix:latest",
-        "cpu": CPU_LIMITS,
-        "portMappings": [
-            {
-                "protocol": "tcp",
-                "containerPort": CONTAINER_PORT,
-                "hostPort": HOST_PORT
-            }
-        ],
-        "logConfiguration": {
-            "logDriver": "syslog",
-            "options": {
-                "tag": "prd-matrix"
-            }
-        },
-        "essential": true,
-        "volumesFrom": []
-      }
-    ]
-  }
+  "family": "ECS_SERVICE",
+  "containerDefinitions": [
+    {
+      "memory": MEMORY,
+      "environment": [
+          {
+              "name": "ENVIRONMENT",
+              "value": "VALUE"
+          },
+          {
+            "name": "JAVA_XMX",
+            "value": "SET_JAVA_XMX"
+          }
+      ],
+      "name": "ECS_SERVICE",
+      "mountPoints": [],
+      "image": "199886244715.dkr.ecr.us-east-1.amazonaws.com/ECR_NAME:IMAGE_VERSION",
+      "cpu": CPU_LIMITS,
+      "portMappings": [
+          {
+              "protocol": "tcp",
+              "containerPort": CONTAINER_PORT,
+              "hostPort": HOST_PORT
+          }
+      ],
+      "logConfiguration": {
+          "logDriver": "syslog",
+          "options": {
+              "tag": "CONTAINER_NAME"
+          }
+      },
+      "essential": true,
+      "volumesFrom": []
+    }
+  ]
+}
