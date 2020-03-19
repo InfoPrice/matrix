@@ -1,5 +1,5 @@
 {
-    "family": "ECS_SERVICE",
+    "family": "prd-matrix",
     "containerDefinitions": [
       {
         "memory": MEMORY,
@@ -13,9 +13,9 @@
               "value": "SET_JAVA_XMX"
             }
         ],
-        "name": "TASK_NAME",
+        "name": "prd-matrix",
         "mountPoints": [],
-        "image": "199886244715.dkr.ecr.us-east-1.amazonaws.com/ECR_NAME:IMAGE_VERSION",
+        "image": "199886244715.dkr.ecr.us-east-1.amazonaws.com/matrix:latest",
         "cpu": CPU_LIMITS,
         "portMappings": [
             {
@@ -27,7 +27,7 @@
         "logConfiguration": {
             "logDriver": "syslog",
             "options": {
-                "tag": "CONTAINER_NAME"
+                "tag": "prd-matrix"
             }
         },
         "essential": true,
