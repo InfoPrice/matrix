@@ -3,31 +3,28 @@
 #################
 ### VARIABLES ###
 #################
+
 setting_variables () {
-    sed -i "s/ECS_SERVICE/${ECS_SERVICE}/g" ./deploy/"${CONFIG_FILE}".json
-    sed -i "s/TASK_NAME/${TASK_NAME}/g" ./deploy/"${CONFIG_FILE}".json
+    sed -i "s/FAMILY_NAME/${FAMILY_NAME}/g" ./deploy/"${CONFIG_FILE}".json
+    sed -i "s/CONTAINER_NAME/${CONTAINER_NAME}/g" ./deploy/"${CONFIG_FILE}".json
     sed -i "s/ECR_NAME/${ECR_NAME}/g" ./deploy/"${CONFIG_FILE}".json
-    sed -i "s/CPU_LIMITS/${CPU_LIMITS}/g" ./deploy/"${CONFIG_FILE}".json
     sed -i "s/IMAGE_VERSION/${IMAGE_VERSION}/g" ./deploy/"${CONFIG_FILE}".json
+    sed -i "s/CONTAINER_ESSENTIAL/${CONTAINER_ESSENTIAL}/g" ./deploy/"${CONFIG_FILE}".json
     sed -i "s/MEMORY/${MEMORY}/g" ./deploy/"${CONFIG_FILE}".json
-    sed -i "s/VALUE/${VALUE}/g" ./deploy/"${CONFIG_FILE}".json
+    sed -i "s/CPU_LIMITS/${CPU_LIMITS}/g" ./deploy/"${CONFIG_FILE}".json
     sed -i "s/CONTAINER_PORT/${CONTAINER_PORT}/g" ./deploy/"${CONFIG_FILE}".json
     sed -i "s/HOST_PORT/${HOST_PORT}/g" ./deploy/"${CONFIG_FILE}".json
-    sed -i "s/CONTAINER_NAME/${CONTAINER_NAME}/g" ./deploy/"${CONFIG_FILE}".json
+    sed -i "s/ENV_VALUE/${ENV_VALUE}/g" ./deploy/"${CONFIG_FILE}".json
     sed -i "s/SET_JAVA_XMX/${SET_JAVA_XMX}/g" ./deploy/"${CONFIG_FILE}".json
 }
 
-#############
-### BUILD ###
-#############
+###################
+### BUILD JAVA ####
+###################
 
 build_and_tag_docker () {
     docker build -t ${ECR_NAME} .
     docker tag ${ECR_NAME}:latest 199886244715.dkr.ecr.us-east-1.amazonaws.com/${ECR_NAME}:${IMAGE_VERSION}
-}
-
-docker_push () {
-    docker push 199886244715.dkr.ecr.us-east-1.amazonaws.com/${ECR_NAME}:${IMAGE_VERSION}
 }
 
 build_docker_image () {
@@ -40,6 +37,10 @@ build_docker_image () {
     fi
 }
 
+docker_push () {
+    docker push 199886244715.dkr.ecr.us-east-1.amazonaws.com/${ECR_NAME}:${IMAGE_VERSION}
+}
+
 push_docker_image () {
     docker_push
     if [ $? -eq 0 ]; then
@@ -50,9 +51,9 @@ push_docker_image () {
     fi
 }
 
-#############
-### DEPLOY ##
-#############
+###################
+### DEPLOY JAVA ###
+###################
 
 get_running_tasks () {
     DOCKER_STATUS=`aws ecs describe-services --cluster ${ECS_CLUSTER} --services ${ECS_SERVICE} --profile ${AWS_PROFILE} | jq '.services[] | .deployments[] | .runningCount' | sed 's/"//g'`
@@ -103,8 +104,16 @@ deploy_docker_image () {
 
 kill_task () {
 
+    echo "Kill Tasks running"
+
     LIST_TASK=$(aws ecs list-tasks --profile "${AWS_PROFILE}" --cluster "${ECS_CLUSTER}" --service-name "${ECS_SERVICE}" --region us-east-1 | jq --raw-output .'taskArns | .[]')
     aws ecs stop-task --task $LIST_TASK --cluster "${ECS_CLUSTER}" --profile "${AWS_PROFILE}" --region us-east-1
+    
+    if [ $? -eq 0 ]; then
+        echo "Task killed with success"
+    else
+        echo "There is no tasks running"
+    fi
 }
 
 deploy_prod_docker_image () {
@@ -112,6 +121,7 @@ deploy_prod_docker_image () {
     TASK_DEFINITION=`aws ecs register-task-definition \
     --cli-input-json file://./deploy/"${CONFIG_FILE}".json \
     --network-mode "${NETWORK_MODE}" \
+    --tags key=costs,value="${COST_CENTER}" \
     --profile "${AWS_PROFILE}" \
     | jq '.taskDefinition | .revision'`
 
@@ -119,9 +129,16 @@ deploy_prod_docker_image () {
     --cluster "${ECS_CLUSTER}" \
     --service "${ECS_SERVICE}" \
     --desired-count "${ECS_TASK_NUMBER}" \
-    --task-definition "${TASK_NAME}":"${TASK_DEFINITION}" \
+    --task-definition "${FAMILY_NAME}":"${TASK_DEFINITION}" \
     --deployment-configuration maximumPercent="${MAXIMUM_PERCENT}",minimumHealthyPercent="${MINIMUM_HEALTH}" \
     --profile "${AWS_PROFILE}"
+
+    if [ $? -eq 0 ]; then
+        echo "Service update with success"
+    else
+        echo "Error to update service"
+        exit 1
+    fi
 }
 
 #################
