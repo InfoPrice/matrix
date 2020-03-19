@@ -13,7 +13,7 @@
               "value": "SET_JAVA_XMX"
             }
         ],
-        "name": "TASK_NAME",
+        "name": "ECS_SERVICE",
         "mountPoints": [],
         "image": "199886244715.dkr.ecr.us-east-1.amazonaws.com/ECR_NAME:IMAGE_VERSION",
         "cpu": CPU_LIMITS,
