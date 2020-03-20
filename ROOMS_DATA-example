@@ -50,5 +50,33 @@
         "id": "10",
         "name": "Financeiro",
         "externalMeetUrl": "https://meet.google.com/gad-dqym-tsx"
+    },
+    {
+        "id": "11",
+        "name": "BuscoPreço"
+    },
+    {
+        "id": "12",
+        "name": "NovoLux"
+    },
+    {
+        "id": "13",
+        "name": "BudPricer"
+    },
+    {
+        "id": "14",
+        "name": "Somos"
+    },
+    {
+        "id": "15",
+        "name": "Pricell"
+    },
+    {
+        "id": "16",
+        "name": "SuperBrother"
+    },
+    {
+        "id": "17",
+        "name": "ConheciMentos"
     }
 ]
