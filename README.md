@@ -84,47 +84,41 @@ If you want run the **#matrix**, you need follow steps:
 		
 
 ## On GCP 
-
 If you prefer, you can run **#matrix** on GCP:
 
 [![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://deploy.cloud.run?git_repo=https://github.com/ResultadosDigitais/matrix&revision=gcp-deploy-button)
 
 
 ## On Heroku
-
 If you prefer, you can run **#matrix** in Heroku: 
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/ResultadosDigitais/matrix)
 
 
-## Environment Variables
+## Environments
 
-The **#matrix** project has some environment variables that important to define.
+The **#matrix** project has some environments that important to define.
 
-- We are using Google to authorizations, you need create a credential [here](https://developers.google.com/identity/sign-in/web/sign-in) and before define this variables:
+1. We are using Google to authorizations, you need create a credential [here](https://developers.google.com/identity/sign-in/web/sign-in) and before define this variables:
 
 		GOOGLE_CLIENT_ID=${paste_your_client_id_here}
 		GOOGLE_SECRET={paste_your_secret_here}
 		GOOGLE_CALLBACK_URL=http://localhost:8080/auth/google/callback
 
-- You can change the secret and maximum age from session:
-
-		COOKIE_SESSION_SECRET=matrix-session
-		COOKIE_SESSION_MAX_AGE=2592000000
-
-- You can define a white List of trusted email domains can enter in the **#matrix**
+2. You can define a white List of trusted email domains can enter in the **#matrix**
 
 		WHITELIST_DOMAINS=["@domain1.com","@domain2.com"]
 
-- If you are running with ssl It's important to configure SSL, to define this:
+
+3. If you are running with ssl It's important to configure SSL, to define this:
 
 		ENFORCE_SSL=true
 
-- The **#matrix** needs to know, where it get rooms definitions:
+4. The **#matrix** needs to know, where it get rooms definitions:
 
 		ROOMS_SOURCE=ENVIRONMENT
 
-- There is a config that define the rooms of The **#matrix**, If you want to customize your rooms or add and a new room, you have to configure a `ROOMS_SOURCE=ENVIRONMENT` and config `ROOMS_DATA` like the example:
+5. There is a config that define the rooms of The **#matrix**, If you want to customize your rooms or add and a new room, you have to configure a `ROOMS_SOURCE=ENVIRONMENT` and config `ROOMS_DATA` like the example:
 
 
 		ROOMS_DATA=[
@@ -146,7 +140,6 @@ The **#matrix** project has some environment variables that important to define.
 
 
 ### External Meet
-
 The default video conferencing in meetings is [Jitsi](https://jitsi.org/jitsi-meet/), but you can change that in any room, using [Meet](https://meet.google.com/) or [Zoom](https://zoom.us/). For that, you just need provide the parameter `externalMeetUrl` in your room config:
 
 		ROOMS_DATA=[
@@ -158,22 +151,21 @@ The default video conferencing in meetings is [Jitsi](https://jitsi.org/jitsi-me
 		 ]
 
 
-## Running in Production
-
+# Running in Production
 If you will run in production we strongly recommend you close your environment using an internal VPN. In this solution everybody with the link and a valid google credential can enter your virtual office. Because this is important for you to maintain your environment closed. Or you can define a variable `WHITELIST_DOMAINS` to limit only authorized users to enter in the **#matrix**. You have to choose a strong key to the `COOKIE_SESSION_SECRET` and have to put in `GOOGLE_CALLBACK_URL` your production domain.
 
 		WHITELIST_DOMAINS=["@domain1.com","@domain2.com"]
 
 
-## Contributing
-
+# Contributing
 We encourage you to contribute to The **#matrix**!
 
 Everyone interacting in **#matrix** codebase, issue trackers, chat rooms, and mailing lists is expected to follow [code of conduct](docs/CODE_OF_CONDUCT.md).
 
 
 ## License
-
 The **#matrix** is released under the [MIT License](docs/LICENSE)
+
+
 
 `"The answer is out there, Neo, and it's looking for you, and it will find you if you want it to."`
