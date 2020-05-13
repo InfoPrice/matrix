@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prd-matrix
+  labels:
+    app: prd-matrix
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prd-matrix
+  template:
+    metadata:
+      labels:
+        app: prd-matrix
+    spec:
+      containers:
+      - name: prd-matrix
+        image: gcr.io/devops-273118/matrix:IMAGE_VERSION
+        #image: gcr.io/devops-273118/matrix:latest
+        resources:
+          limits:
+            memory: "400Mi"
+            cpu: "200m"
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 5
+          timeoutSeconds: 30
+        ports:
+        - name: http-server
+          containerPort: 8080
+          protocol: TCP
