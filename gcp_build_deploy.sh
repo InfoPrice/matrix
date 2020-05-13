@@ -5,7 +5,7 @@
 ###################
 
 build_and_tag_docker () {
-    docker build -t prd-matrix -f dockerfile .
+    docker build -t prd-matrix -f Dockerfile .
     docker tag prd-matrix:latest gcr.io/devops-273118/matrix:${IMAGE_VERSION}
     #docker tag noe-relatorio:latest gcr.io/devops-273118/matrix:latest
 }
