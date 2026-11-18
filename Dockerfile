@@ -9,9 +9,7 @@ COPY ./ /var/app
 EXPOSE 8080
 
 ENV GOOGLE_CLIENT_ID=666902240845-nt8eikqldonf8m7pqj5j8s0h4locvc6m.apps.googleusercontent.com
-ENV GOOGLE_SECRET=Ei-OlGn8AEWXOehNrmSfS4ow
 ENV GOOGLE_CALLBACK_URL=https://escritorio.infoprice.co/auth/google/callback
-ENV COOKIE_SESSION_SECRET=matrix-session
 ENV COOKIE_SESSION_MAX_AGE=2592000000
 ENV ENFORCE_SSL=false
 ENV WHITELIST_DOMAINS=["@infoprice.co"]
